@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import { connectWallet,getCurrentWalletConnected,mintNFT  } from "./utils/interact.js";
 const Minter = (props) => {
 
   //State variables
@@ -9,17 +9,22 @@ const Minter = (props) => {
   const [description, setDescription] = useState("");
   const [url, setURL] = useState("");
  
-  useEffect(async () => { //TODO: implement
-    
+  useEffect(async () => { 
+    const {address, status} = await getCurrentWalletConnected();
+    setWallet(address)
+    setStatus(status); 
   }, []);
 
-  const connectWalletPressed = async () => { //TODO: implement
-   
+  const connectWalletPressed = async () => { 
+    const walletResponse = await connectWallet();
+    setStatus(walletResponse.status);
+    setWallet(walletResponse.address);
   };
 
-  const onMintPressed = async () => { //TODO: implement
-    
-  };
+  const onMintPressed = async () => {
+    const { status } = await mintNFT(url, name, description);
+    setStatus(status);
+};
 
   return (
     <div className="Minter">
